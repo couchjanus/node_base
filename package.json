@@ -1,0 +1,23 @@
+{
+  "name": "node_base",
+  "version": "1.0.0",
+  "description": "Node js Blog project",
+  "main": "index.js",
+  "repository": "https://github.com/couchjanus/node_base",
+  "author": "Janus Nicon <janusnic@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./bin/server.js",
+    "test": "mocha test",
+    "nodemon": "nodemon --config nodemon.json --exec yarn run start"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^4.3.0",
+    "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-plugin-import": "^2.7.0",
+    "superagent": "^3.5.2"
+  }
+}
