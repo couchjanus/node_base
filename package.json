@@ -7,7 +7,7 @@
   "author": "Janus Nicon <janusnic@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./bin/server.js",
+    "start": "node ./index.js",
     "test": "mocha test",
     "nodemon": "nodemon --config nodemon.json --exec yarn run start"
   },
