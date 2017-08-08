@@ -1,0 +1,47 @@
+// nav
+nav {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li { display: inline-block; }
+
+  a {
+    display: block;
+    padding: 6px 12px;
+    text-decoration: none;
+  }
+}
+
+a {
+    transition: transform 1s
+}
+
+.top-bar {
+    text-align: left;
+    background: #222;
+    position: relative;
+    zoom: 1;
+    width: 100% !important;
+    z-index: 6000;
+    padding: 20px 0 20px;
+}
+.bar-inside {
+    display: inline-block;
+    left:0;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+.bar-inside  a {
+    display: block;
+    width: 100%;
+    height: 38px;
+    border-radius: 0;
+    bottom: auto;
+    margin: 0;
+    color: #fff;
+    text-decoration: none;
+}

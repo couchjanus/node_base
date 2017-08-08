@@ -1,0 +1,8 @@
+.content {
+    border: 1px solid $blue; /* синий бордюр */
+    color: darken($blue, 20%); /* затемнение цвета на 20% */
+}
+.content1 {
+    border: 1px solid $blue; /* синий бордюр */
+    color: mix(black, $blue, 29);
+}

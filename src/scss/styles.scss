@@ -1,0 +1,287 @@
+.testing {
+width: percentage(5/7);
+}
+
+// // Синтаксис Scss
+//
+// $primary-color: #333;
+//
+// // $font-stack: 'Helvetica Neue Light', 'Helvetica', 'Arial', sans-serif;
+// $font-stack:  'Helvetica Neue Light', Helvetica, Arial, sans-serif;
+//
+// body {
+//   font: 100% $font-stack;
+//   color: $primary-color;
+// }
+//
+// .container { width: 100%; }
+//
+// article[role="main"] {
+//   float: left;
+//   width: 600px / 960px * 100%;
+// }
+//
+// aside[role="complementary"] {
+//   float: right;
+//   width: 300px / 960px * 100%;
+// }
+//
+// // Функции
+//
+// p {
+//   color: hsl(0, 100%, 50%);
+// }
+//
+//
+// $blue: #77a;
+//
+// .content {
+//         border: 1px solid $blue; /* синий бордюр */
+//         color: darken($blue, 20%); /* затемнение цвета на 20% */
+//     }
+//
+// $percentage: 20%;
+//
+// .content1 {
+//         border: 1px solid $blue; /* синий бордюр */
+//         color: mix(black, $blue, $percentage);
+// }
+//
+//
+//
+// $grid-width: 40px;
+// $gutter-width: 10px;
+//
+// @function grid-width($n) {
+//   @return $n * $grid-width + ($n - 1) * $gutter-width;
+// }
+//
+// #sidebar { width: grid-width(5); }
+//
+//
+// /// Немного осветлить цвет
+// /// @access public
+// /// @param {Color} $color - цвет для осветления
+// /// @param {Number} $percentage - процент от `$color` в возвращаемом цвете
+// /// @return {Color}
+// @function tint($color, $percentage) {
+//   @return mix(white, $color, $percentage);
+// }
+//
+//
+// $margin: 16px; /* отступ */
+// $fontSize: 14px; /* размер текста */
+//
+// .border {
+//     padding: $margin / 2;
+//     margin: $margin / 2;
+//     border-color: tint($blue, 15%);
+// }
+//
+//
+// /// Немного затемнить цвет
+// /// @access public
+// /// @param {Color} $color - цвет для затемнения
+// /// @param {Number} $percentage - процент от `$color` в возвращаемом цвете
+// /// @return {Color}
+// @function shade($color, $percentage) {
+//   @return mix(black, $color, $percentage);
+// }
+//
+//
+// .content {
+//     border: 1px solid shade($blue, 22%); /* синий бордюр */
+//     color: darken($blue, 20%); /* затемнение цвета на 20% */
+// }
+//
+//
+// // nav
+// nav {
+//   ul {
+//     margin: 0;
+//     padding: 0;
+//     list-style: none;
+//   }
+//
+//   li { display: inline-block; }
+//
+//   a {
+//     display: block;
+//     padding: 6px 12px;
+//     text-decoration: none;
+//   }
+// }
+//
+// //  &:hover
+// a {
+//  font-weight: bold;
+//  text-decoration: none;
+//  &:hover { text-decoration: underline; }
+//  body.firefox & { font-weight: normal; }
+// }
+//
+//
+// #main {
+//  color: black;
+//  a {
+//    font-weight: bold;
+//    &:hover { color: red; }
+//  }
+// }
+//
+// #main {
+//  color: black;
+//  &-sidebar { border: 1px solid; }
+// }
+//
+//
+//
+// // Директива @extend
+//
+// .error {
+//   border: 1px #f00;
+//   background-color: #fdd;
+// }
+// .seriousError {
+//   @extend .error;
+//   border-width: 3px;
+// }
+//
+// // Директива @media
+//
+// .sidebar {
+// width: 300px;
+//  @media screen and (orientation: landscape) {
+//    width: 500px;
+//  }
+// }
+//
+// @media screen {
+//  .sidebar {
+//    @media (orientation: landscape) {
+//      width: 500px;
+//    }
+//  }
+// }
+// $media: screen;
+// $feature: -webkit-min-device-pixel-ratio;
+// $value: 1.5;
+//
+// @media #{$media} and ($feature: $value) {
+//  .sidebar {
+//    width: 500px;
+//  }
+// }
+//
+//
+// // @mixin
+// @mixin large-text {
+//  font: {
+//    family: Arial;
+//    size: 20px;
+//    weight: bold;
+//  }
+//  color: #ff0000;
+// }
+//
+// .page-title {
+//  @include large-text;
+//  padding: 4px;
+//  margin-top: 10px;
+// }
+//
+//
+// @mixin clearfix {
+//  display: inline-block;
+//  &:after {
+//    content: ".";
+//    display: block;
+//    height: 0;
+//    clear: both;
+//    visibility: hidden;
+//  }
+//  * html & { height: 1px }
+// }
+//
+// .clear {
+//     @include clearfix;
+// }
+//
+// // Миксины могут принимать значения Sass как аргументы
+// @mixin sexy-border($color, $width) {
+//   border: {
+//     color: $color;
+//     width: $width;
+//     style: dashed;
+//   }
+// }
+//
+// p { @include sexy-border(blue, 1in); }
+//
+//
+// // Блоки контента в миксинах
+//
+//  @mixin apply-to-ie6-only {
+//    * html {
+//      @content;
+//    }
+//  }
+//  @include apply-to-ie6-only {
+//    #logo {
+//      background-image: url(/logo.gif);
+//    }
+//  }
+//
+//
+//
+// // /// Помощник для сброса внутреннего обтекания
+// // /// @author Николас Галлагер
+// // /// @link http://nicolasgallagher.com/micro-clearfix-hack/ Micro Clearfix
+// // @mixin clearfix {
+// //   &::after {
+// //     content: '';
+// //     display: table;
+// //     clear: both;
+// //   }
+// // }
+// //
+// // //Еще один обоснованный пример примеси: примесь для определения размера элемента, одновременно определяющий и ширину, и высоту. Код станет не только легче набирать, но и легче читать.
+// //
+// // /// Помощник для определения размера
+// // /// @author Hugo Giraudel
+// // /// @param {Length} $width
+// // /// @param {Length} $height
+// // @mixin size($width, $height: $width) {
+// //   width: $width;
+// //   height: $height;
+// // }
+// //
+// // @mixin table-base {
+// //     th {
+// //         text-align: center;
+// //         font-weight: bold;
+// //     }
+// //     td, th {
+// //         padding: 2px
+// //     }
+// // }
+// //
+// // #data {
+// //     @include table-base;
+// // }
+// //
+// // @mixin border-radius($radius) {
+// //     -webkit-border-radius: $radius;
+// //     -moz-border-radius: $radius;
+// //     -ms-border-radius: $radius;
+// //     border-radius: $radius;
+// // }
+// //
+// // .box-1 {
+// //     @include border-radius(10px);
+// // }
+// //
+// // .box-2 {
+// //     @include border-radius(5px);
+// // }
+// //
