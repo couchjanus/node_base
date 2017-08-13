@@ -1,14 +1,18 @@
 const app = require('../index');
-
-const http = require('http');
+const db = require('../core/db');
 
 const hostname = '127.0.0.1';
 const port = 3000;
 
 app.set('port', port);
 
-const server = http.createServer(app);
-
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+db.connect('mongodb://localhost:27017/blog', (err) => {
+  if (err) {
+    console.log('Unable to connect to Mongo.');
+    process.exit(1);
+  } else {
+    app.listen(port, hostname, () => {
+      console.log(`Server running at http://${hostname}:${port}/`);
+    });
+  }
 });

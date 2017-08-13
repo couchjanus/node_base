@@ -1,5 +1,9 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Welcome to #{title}
+  
+  each val in posts
+        - var ref = "blog/" + val._id
+        li
+            a(href=ref)= val.title

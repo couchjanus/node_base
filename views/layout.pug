@@ -1,7 +1,15 @@
 doctype html
-html
+html(lang="en")
   head
+    meta(charset="utf-8")
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    div.wrapp#main
+      include includes/header
+      block content
+
+    include includes/footer
+    block footer-content
+      hr
+      p My Project
