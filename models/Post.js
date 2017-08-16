@@ -1,10 +1,10 @@
 'use strict';
 
-var mongoose            = require('mongoose');
+const mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var PostSchema = new Schema({
+let PostSchema = new Schema({
   title: {
     type: String,
     required:[true,"title Required"],
@@ -17,7 +17,7 @@ var PostSchema = new Schema({
     type: String,
     required:[true,"text Required"]
   },
-  created_date: {
+  created_at: {
     type: Date,
     default: Date.now
   },
@@ -32,7 +32,6 @@ var PostSchema = new Schema({
   // Например коментарии
   // Оценки
   // и тд
-
   // slug:String
 });
 

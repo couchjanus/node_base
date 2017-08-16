@@ -1,0 +1,13 @@
+extends ../../layouts/admin
+
+block content
+
+  h1 Delete Category: #{category.name}
+
+  p Do you really want to delete this Category?
+
+  form(method='POST' action='')
+    div.form-group
+      input#id.form-control(type='hidden',name='id', required='true', value=category._id )
+
+    button.btn.btn-primary(type='submit') Delete

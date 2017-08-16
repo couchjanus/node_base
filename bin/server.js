@@ -6,13 +6,6 @@ const port = 3000;
 
 app.set('port', port);
 
-db.connect('mongodb://localhost:27017/blog', (err) => {
-  if (err) {
-    console.log('Unable to connect to Mongo.');
-    process.exit(1);
-  } else {
-    app.listen(port, hostname, () => {
+app.listen(port, hostname, () => {
       console.log(`Server running at http://${hostname}:${port}/`);
     });
-  }
-});

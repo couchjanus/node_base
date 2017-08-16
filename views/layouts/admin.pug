@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    div.wrapp#main
+      include ../includes/admin/header
+      block content
+
+    include ../includes/admin/footer
+    block footer-content
+      hr
+      p My Project

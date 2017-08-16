@@ -5,7 +5,10 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const routes = require('./routes/index');
+const mongoose = require('mongoose');
+
+const index = require('./routes/index');
+const admin = require('./routes/admin');
 
 const app = express();
 
@@ -13,6 +16,17 @@ const app = express();
 // views корневая директория представлений. По умолчанию текущая_папка/views
 
 app.set('views', path.join(__dirname, 'views'));
+
+app.use(cookieParser());
+
+
+// Use native Node promises
+mongoose.Promise = global.Promise;
+// connect to MongoDB
+mongoose.connect('mongodb://localhost/blog')
+  .then(() =>  console.log('connection succesful'))
+  .catch((err) => console.error(err));
+
 
 // view engine - шаблонизатор по умолчанию для представлений, вызываемых без расширения файла.
 app.set('view engine', 'pug');
@@ -23,14 +37,13 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-
+app.use('/', index);
+app.use('/admin', admin);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
