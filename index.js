@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const mongoose = require('mongoose');
-
+const expressValidator = require('express-validator');
 const index = require('./routes/index');
 const admin = require('./routes/admin');
 
@@ -38,7 +38,7 @@ app.use(logger('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(expressValidator());
 
 app.use(express.static(path.join(__dirname, 'public')));
 

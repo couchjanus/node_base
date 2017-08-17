@@ -10,7 +10,7 @@ block content
 
     div.form-group
       label(for='content') Content:
-      textarea#content.form-control(type='textarea', rows="5" placeholder='Content' name='content' value=(undefined===post ? '' : post.content) required='true')
+      textarea#content.form-control(type='textarea', rows="5" cols="80" placeholder='Content' name='content' required='true')= (undefined===post ? '' : post.content)
 
     div.form-group
       label Category:

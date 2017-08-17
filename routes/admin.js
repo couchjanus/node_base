@@ -16,23 +16,23 @@ router.get('/category/:id/update', controllers.categories_controller.category_up
 router.post('/category/:id/update', controllers.categories_controller.category_update_post);
 
 
-// router.get('/', controllers.post_controller.index);
+// router.get('/', controllers.posts_controller.index);
 
-// router.get('/post/create', controllers.post_controller.post_create_get);
+router.get('/post/create', controllers.posts_controller.post_create_get);
 
-// router.post('/post/create', controllers.post_controller.post_create_post);
+router.post('/post/create', controllers.posts_controller.post_create_post);
 
-// router.get('/post/:id/delete', controllers.post_controller.post_delete_get);
+router.get('/post/:id/delete', controllers.posts_controller.post_delete_get);
 
-// router.post('/post/:id/delete', controllers.post_controller.post_delete_post);
+router.post('/post/:id/delete', controllers.posts_controller.post_delete_post);
 
-// router.get('/post/:id/update', controllers.post_controller.post_update_get);
+router.get('/post/:id/update', controllers.posts_controller.post_update_get);
 
-// router.post('/post/:id/update', controllers.post_controller.post_update_post);
+router.post('/post/:id/update', controllers.posts_controller.post_update_post);
 
-// router.get('/post/:id', controllers.post_controller.post_detail);
+router.get('/post/:id', controllers.posts_controller.post_detail);
 
-// router.get('/posts', controllers.post_controller.post_list);
+router.get('/posts', controllers.posts_controller.post_index);
 
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const models = require("../models");
+const models = require("../../models");
 
 let async = require('async');
 
@@ -12,17 +12,17 @@ exports.index = function(req, res) {
             models.Category.count(callback);
         },
     }, function(err, results) {
-        res.render('index', { title: 'Janus Blog', error: err, data: results });
+        res.render('admin/posts/index', { title: 'Janus Blog', error: err, data: results });
     });
 };
 
-exports.post_list = function(req, res, next) {
+exports.post_index = function(req, res, next) {
 
   models.Post.find()
     .sort([['title', 'ascending']])
     .exec(function (err, list_posts) {
       if (err) { return next(err); }
-      res.render('post_list', { title: 'post List', post_list:  list_posts});
+      res.render('admin/posts/index', { title: 'post List', post_list:  list_posts});
   });
 
 };
@@ -37,7 +37,7 @@ exports.post_detail = function(req, res, next) {
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        res.render('post_detail', { title: 'Title', post:  results.post } );
+        res.render('admin/posts/detail', { title: 'Title', post:  results.post } );
     });
 
 };
@@ -50,7 +50,7 @@ exports.post_create_get = function(req, res, next) {
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        res.render('post_form', { title: 'Create post', categories:results.categories });
+        res.render('admin/posts/form', { title: 'Create post', categories:results.categories });
     });
 
 };
@@ -91,7 +91,7 @@ exports.post_create_post = function(req, res, next) {
                 }
             }
 
-            res.render('post_form', { title: 'Create Post', categories:results.categories, post: post, errors: errors });
+            res.render('admin/posts/form', { title: 'Create Post', categories:results.categories, post: post, errors: errors });
         });
 
     }
@@ -112,7 +112,7 @@ exports.post_delete_get = function(req, res, next) {
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        res.render('post_delete', { title: 'Delete post', post: results.post } );
+        res.render('admin/posts/delete', { title: 'Delete post', post: results.post } );
     });
 
 };
@@ -128,7 +128,7 @@ exports.post_delete_post = function(req, res, next) {
 
             models.Post.findByIdAndRemove(req.body.id, function deletePost(err) {
                 if (err) { return next(err); }
-                res.redirect('/blog/posts');
+                res.redirect('/admin/posts');
             });
     });
 
@@ -156,7 +156,8 @@ exports.post_update_get = function(req, res, next) {
                     }
                 }
             }
-            res.render('post_form', { title: 'Update post', categories:results.categories, post: results.post });
+            // console.log("results.post ", results.post);
+            res.render('admin/posts/form', { title: 'Update post', categories:results.categories, post: results.post });
         });
 
 };
@@ -196,7 +197,7 @@ exports.post_update_post = function(req, res, next) {
                     results.categories[i].checked='true';
                 }
             }
-            res.render('post_form', { title: 'Update post',categories:results.categories, post: post, errors: errors });
+            res.render('admin/posts/form', { title: 'Update post',categories:results.categories, post: post, errors: errors });
         });
 
     }

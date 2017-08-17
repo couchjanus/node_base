@@ -1,38 +1,24 @@
-'use strict';
-
 const mongoose = require('mongoose');
 
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-let PostSchema = new Schema({
-  title: {
-    type: String,
-    required:[true,"title Required"],
-    // Данное поле обязательно. Если его нет вывести ошибку с текстом title Required
-    // Максимальная длинна 32 Юникод символа (Unicode symbol != byte)
-    minlength:[6,"tooShort"],
-    unique:true // должно быть уникальным
-  },
-  content: {
-    type: String,
-    required:[true,"text Required"]
-  },
-  created_at: {
-    type: Date,
-    default: Date.now
-  },
-  status: {
-    type: [{
-      type: String,
-      enum: ['active', 'notpublished', 'private']
-    }],
-    default: ['active']
-  }
-  // Здесь будут и другие поля, но сейчас еще рано их сюда ставить!
-  // Например коментарии
-  // Оценки
-  // и тд
-  // slug:String
+const PostSchema = new Schema({
+    title:  { type: String, required: true, validate: /\S+/ },
+    content: { type: String, required: true, validate: /\S+/ },
+    state: { type: Number, default: 1 },
+    public: { type: Number, default: 1 },
+    create_at: { type: Date, default: Date.now },
+    update_at: { type: Date, default: Date.now },
+    
+    category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
+
 });
 
-module.exports = mongoose.model('Post', PostSchema);
+PostSchema
+.virtual('url')
+.get(function () {
+  return '/admin/post/'+this._id;
+});
+
+const Post = mongoose.model('Post', PostSchema);
+module.exports = Post;
