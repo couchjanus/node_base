@@ -1,11 +1,12 @@
-const app = require('../index');
-const db = require('../core/db');
+const express = require('express');
+const config = require('../config');
 
-const hostname = '127.0.0.1';
-const port = 3000;
+const host = config.get('app:host');
+const port = config.get('app:port');
 
-app.set('port', port);
+const app = express(),
+      middleware = require('../middleware')(app, express);
 
-app.listen(port, hostname, () => {
-      console.log(`Server running at http://${hostname}:${port}/`);
-    });
+app.listen(port, host, () => {
+    console.log(`Server running at http://${host}:${port}/`);
+});

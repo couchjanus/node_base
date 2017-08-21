@@ -1,0 +1,26 @@
+include ../includes/head
+block header
+    include ../includes/header
+
+block banner
+.content
+  .row
+    div(class="col-sm-8 col-sm-offset-2")
+      div(class="jumbotron text-center")
+        h1 Express Authentication
+            
+        a(href="/login" class="btn btn-default") 
+          span(class="fa fa-sign-in") Login
+        a(href="/signup" class="btn btn-default") 
+          span(class="fa fa-user") Signup
+        a(href="/auth/facebook" class="btn btn-primary") 
+          span(class="fa fa-facebook") Facebook
+        a(href="/auth/twitter" class="btn btn-info")
+          span(class="fa fa-twitter") Twitter
+        a(href="/auth/google" class="btn btn-danger")
+          span(class="fa fa-google-plus") Google
+
+block content
+
+block footer
+    include ../includes/footer

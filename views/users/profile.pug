@@ -1,0 +1,15 @@
+extends ../layouts/app
+
+block content
+  section#profile.section-padding
+    .container
+      .row
+        div(class="col-sm-8 col-sm-offset-2")
+          .header-section.text-center
+            h1(class="fa fa-user") Profile
+            span
+              strong user id: 
+               =(user._id ? user._id : '')
+            span(class="fa fa-sign-out") 
+              a(href="/") Sign out
+            hr

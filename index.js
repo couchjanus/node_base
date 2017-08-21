@@ -22,8 +22,12 @@ app.use(cookieParser());
 
 // Use native Node promises
 mongoose.Promise = global.Promise;
+
 // connect to MongoDB
-mongoose.connect('mongodb://localhost/blog')
+
+const configDB = require('./config/db');
+
+mongoose.connect(configDB.url)
   .then(() =>  console.log('connection succesful'))
   .catch((err) => console.error(err));
 
