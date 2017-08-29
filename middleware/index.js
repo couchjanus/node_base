@@ -11,14 +11,15 @@ module.exports = (app, express) => {
 
         config = require('../config'),
         mongoose = require('../core/db'),
-        // Подключим и настроим стратегию авторизации. 
+
         passport = require('passport'),
 
         MongoStore = require('connect-mongo')(session);
 
   const index = require('../routes/index');
+  const contact = require('../routes/contact');
   const admin = require('../routes/admin');
-  
+
   // Page Rendering
   app.set('views', path.join(__dirname, '../views'));
   app.set('view engine', 'pug');
@@ -45,18 +46,19 @@ module.exports = (app, express) => {
           secret: config.get('session:secret'),
           key: config.get('session:key'),
           cookie: config.get('session:cookie'),
-          resave: false,
-          saveUninitialized: false,
-          // Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
+          resave: true,
+          saveUninitialized: true,
           store: new MongoStore({ 
             url: config.get('db:connection') + '/' + config.get('db:name'),
+            autoReconnect: true,
+            clear_interval: 3600
           })
   }));
 
   // Passport:
   app.use(passport.initialize());
   app.use(passport.session());
-  
+  // Подключим и настроим стратегию авторизации.   
   require('../core/auth')(passport);
   
   // Public directory
@@ -65,6 +67,8 @@ module.exports = (app, express) => {
   // Routing
 
   app.use('/', index);
+  app.use('/contact', contact);
+  
   app.use('/admin', admin);
 
   // Error handing

@@ -1,0 +1,23 @@
+extends ../layouts/app
+
+block content
+  section.section-padding
+    .container
+      .row
+        .header-section.text-center
+          h1= title
+          form(role='form', method='post', action='contact/send')
+            .form-group
+              label Subject
+              input.form-control(type='text', name='subject', placeholder='Enter Subject', value='Hello There')
+            .form-group
+              label Name
+              input.form-control(type='text', name='name', placeholder='Enter Name', value='Janus')
+            .form-group
+              label Email
+              input.form-control(type='email', name='email', placeholder='Enter Email', value='janusnic@gmail.com')
+            .form-group
+              label Message
+              textarea.form-control#textarea-message(name='message', placeholder='Enter Message...') Hello World!
+            button.btn.btn-default(type='submit') Submit
+          

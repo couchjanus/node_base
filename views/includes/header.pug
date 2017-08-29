@@ -13,19 +13,18 @@ body
       #myNavbar.collapse.navbar-collapse
         ul.nav.navbar-nav.navbar-right
           li
-            a(href='#feature') Features
+            a(href='/') Home
           li
-            a(href='#organisations') Organisations
+            a(href='#organisations') About
           li
-            a(href='#courses') Courses
-          li
-            a(href='#pricing') Pricing
+            a(href='/contact') Contact
+          
           if (!user)
-            li
-              a(href='/login') Sign in
-            li
-              a(href='/register') Sign up
+            li#login_trigger
+              a(href='#') Signin / Signup
           else
+            li
+            a(href='/profile') Profile
             li
               a(href='/logout') Logout
           li.btn-trial

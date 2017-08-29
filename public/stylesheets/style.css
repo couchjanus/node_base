@@ -919,3 +919,37 @@ li h4 a {
 .post .post-footer .comments-list .comment > .comments-list {
   margin-left: 50px;
 }
+
+#login_panel {
+    opacity: 0;
+    position: fixed;
+    z-index: -1;
+    top: 5em;
+    bottom: 0;
+    margin: auto;
+    right: 0;
+    left:0;
+    bottom: 0;
+    height: 50%;
+    max-height: 600px;
+    width: 80%;
+    max-width: 600px;
+    overflow: hidden;
+    cursor: pointer;
+    /*text-align: left;*/
+    transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+}
+
+#login_panel.show {
+    opacity: 1;
+    background: #FFF;
+    z-index: 998;
+    transform: scale(1);
+}
+
+.overflow-hidden{
+    overflow:hidden;
+}

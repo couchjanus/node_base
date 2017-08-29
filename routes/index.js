@@ -4,52 +4,43 @@ const controllers = require("../controllers");
 const passport = require('passport');
 
 router.get('/', controllers.home_controller.index);
+
 router.get('/login', controllers.auth_controller.login_get);
-
-router.post('/login', passport.authenticate('local-login', {
-  successRedirect: '/profile',
-  failureRedirect: '/login',
-  failureFlash: true,
-}));
-
-router.post('/register', passport.authenticate('local-signup', {
-  successRedirect: '/profile',
-  failureRedirect: '/register',
-  failureFlash: true,
-}));
-
-router.get('/profile', isLoggedIn, function(req, res) {
-  res.render('users/profile', { user: req.user });
-});
-
+router.post('/login', controllers.auth_controller.login_post);
 
 router.get('/logout', controllers.auth_controller.logout_get);
 
-router.get('/register', controllers.auth_controller.register_get);
-// router.post('/register', controllers.auth_controller.register_post);
+router.get('/forgot', controllers.auth_controller.forgot_get);
+router.post('/forgot', controllers.auth_controller.forgot_post);
+router.get('/reset/:token', controllers.auth_controller.reset_get);
+router.post('/reset/:token', controllers.auth_controller.reset_post);
+
+router.get('/signup', controllers.auth_controller.signup_get);
+router.post('/signup', controllers.auth_controller.signup_post);
+
+router.get('/account', isAuthenticated, controllers.auth_controller.account_get);
+router.post('/account/profile', isAuthenticated, controllers.auth_controller.update_profile_post);
+router.post('/account/password', isAuthenticated, controllers.auth_controller.update_password_post);
+router.post('/account/delete', isAuthenticated, controllers.auth_controller.delete_account_post);
+router.get('/account/unlink/:provider', isAuthenticated, controllers.auth_controller.oauth_unlink_get);
+
+router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
+router.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login',
+  successRedirect: '/account'
+}));
 
 
-router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
-
-router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: '/profile',
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/auth/google/callback', passport.authenticate('google', {
+  successRedirect: '/account',
   failureRedirect: '/',
 }));
 
 router.get('/auth/twitter', passport.authenticate('twitter'));
-
 router.get('/auth/twitter/callback', passport.authenticate('twitter', {
-  successRedirect: '/profile',
+  successRedirect: '/account',
   failureRedirect: '/',
 }));
-
-router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-router.get('/auth/google/callback', passport.authenticate('google', {
-  successRedirect: '/profile',
-  failureRedirect: '/',
-}));
-
 
 
 // Render post
@@ -60,8 +51,16 @@ router.get('/auth/google/callback', passport.authenticate('google', {
 
 module.exports = router;
 
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated())
-      return next();
-  res.redirect('/');
-}
+function isAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+};
+
+
+// function isLoggedIn(req, res, next) {
+//   if (req.isAuthenticated())
+//       return next();
+//   res.redirect('/');
+// }

@@ -1,57 +1,95 @@
+const bcrypt = require('bcrypt-nodejs');
+const crypto = require('crypto');
 const mongoose = require('mongoose');
-const bcrypt   = require('bcrypt-nodejs');
 
-const userSchema = mongoose.Schema({
-  local: {
-    username:{
-      type:String,
-      // required:[true,"Username is required"],
-      // unique:true // должно быть уникальным
+const userSchema = new mongoose.Schema(
+{
+  email: {
+        type: String,
+        lowercase: true,
+        unique: true,
+        required: true
     },
-    email: {
-      type: String,
-      trim: true,
-      lowercase: true,
-      unique: true,
-      required: 'Email address is required',
-      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    password: {
+        type: String,
+        required: true
     },
-    password:{
-      type:String, // тип String
-      maxlength:[32, "too Long"],
-      minlength:[8, "too Short"],
-      match:[/^[A-Za-z0-9]+$/, "password Incorrect"],
-      required:[true,"password is required"]
+    role: {
+        type: String,
+        enum: ['reader', 'creator', 'editor', 'admin'],
+        default: 'reader'
+    },
+ 
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+
+  facebook: String,
+  twitter: String,
+  google: String,
+    
+  tokens: Array,
+
+  profile: {
+    name: String,
+    gender: String,
+    location: String,
+    website: String,
+    picture: String
     }
+  }, 
+  { 
+    timestamps: true 
+  }
+);
 
-  },
-  facebook: {
-    id: String,
-    token: String,
-    email: String,
-    name: String,
-    username: String,
-  },
-  twitter: {
-    id: String,
-    token: String,
-    displayName: String,
-    username: String,
-  },
-  google: {
-    id: String,
-    token: String,
-    email: String,
-    name: String,
-  },
+/**
+ * Password hash middleware.
+ */
+userSchema.pre('save', function save(next) {
+  const user = this;
+  const SALT_FACTOR = 10;
+  if (!user.isModified('password')) { 
+    return next(); 
+  }
+
+  bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
+    if (err) { 
+      return next(err); 
+    }
+    bcrypt.hash(user.password, salt, null, (err, hash) => {
+      if (err) { 
+        return next(err); 
+      }
+      user.password = hash;
+      next();
+    });
+  });
 });
 
-userSchema.methods.generateHash = function(password) {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+/**
+ * Helper method for validating user's password.
+ */
+userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    cb(err, isMatch);
+  });
 };
 
-userSchema.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.local.password);
+
+/**
+ * Helper method for getting user's gravatar.
+ */
+userSchema.methods.gravatar = function gravatar(size) {
+  if (!size) {
+    size = 200;
+  }
+  if (!this.email) {
+    return `https://gravatar.com/avatar/?s=${size}&d=retro`;
+  }
+  const md5 = crypto.createHash('md5').update(this.email).digest('hex');
+  return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;

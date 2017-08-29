@@ -25,4 +25,16 @@
             window.location.hash = hash;
         });
     });
+
+     $('#login_trigger').on('click', function (e) {
+        e.preventDefault();
+        console.log("clocked");
+        if ($('#login_panel').hasClass('show')) {
+            $('#login_panel').removeClass('show');
+            $('body').removeClass('overflow-hidden');
+        } else {
+            $('body').addClass('overflow-hidden');
+            $('#login_panel').addClass('show');
+        }
+    });
 })(jQuery);
