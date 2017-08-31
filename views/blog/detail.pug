@@ -1,0 +1,19 @@
+extends ../layouts/app
+
+block content
+  section#feature.section-padding
+    .container
+      .row
+        .header-section.text-center
+          h1 #{post.title}
+        div #{post.content}
+
+        ul.nav.navbar-nav
+          each val in post.category
+            li.btn-trial: a(href=val.link) #{val.name}
+
+        br
+        include ../comments/flash-comments
+  
+  script(src='https://js.pusher.com/4.1/pusher.min.js')
+  script(src='/javascripts/comment.js')

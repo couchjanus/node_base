@@ -44,9 +44,11 @@ router.get('/auth/twitter/callback', passport.authenticate('twitter', {
 
 
 // Render post
-// router.get('/blog', controllers.posts_controller.index);
-// router.get('/blog/:id', controllers.posts_controller.show);
 
+router.get('/blog', controllers.blog_controller.blog_index);
+router.get('/blog/:id', controllers.blog_controller.blog_detail);
+
+router.post('/comment', controllers.comment_controller.comment_post);
 
 
 module.exports = router;

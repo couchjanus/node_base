@@ -9,15 +9,28 @@ const PostSchema = new Schema({
     public: { type: Number, default: 1 },
     create_at: { type: Date, default: Date.now },
     update_at: { type: Date, default: Date.now },
-    
-    category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
 
+    category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
+    author: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    },
+    
 });
 
 PostSchema
 .virtual('url')
 .get(function () {
   return '/admin/post/'+this._id;
+});
+
+PostSchema
+.virtual('link')
+.get(function () {
+  return '/blog/'+this._id;
 });
 
 const Post = mongoose.model('Post', PostSchema);

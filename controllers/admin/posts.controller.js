@@ -12,11 +12,12 @@ exports.index = function(req, res) {
             models.Category.count(callback);
         },
     }, function(err, results) {
-        res.render('admin/posts/index', { title: 'Janus Blog', error: err, data: results });
+        res.render('admin/index', { title: 'Janus Blog', error: err, data: results });
     });
 };
 
-exports.post_index = function(req, res, next) {
+
+exports.get_index = function(req, res, next) {
 
   models.Post.find()
     .sort([['title', 'ascending']])

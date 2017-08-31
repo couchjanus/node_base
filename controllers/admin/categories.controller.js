@@ -1,4 +1,5 @@
 const models = require("../../models");
+let async = require('async');
 
 exports.category_index = (req, res, next) => {
 
@@ -11,99 +12,121 @@ exports.category_index = (req, res, next) => {
 
 };
 
+exports.category_detail = (req, res, next) => {
+
+    async.parallel({
+        category: function(callback) {
+            models.Category.findById(req.params.id)
+              .exec(callback);
+        },
+
+        category_posts: function(callback) {
+          models.Post.find({ 'category': req.params.id })
+          .exec(callback);
+        },
+
+    }, function(err, results) {
+        if (err) { return next(err); }
+
+        res.render('admin/categories/detail', { title: 'Category Detail', category: results.category, category_posts: results.category_posts } );
+    });
+
+};
+
 exports.category_create_get = (req, res, next) => {
     res.render('admin/categories/form', { title: 'Create Category'});
 };
 
-
-exports.category_detail = (req, res, next) => {
-      models.Category.findById(req.params.id)
-        .exec((err, category) => {
-        if (err) { return next(err); }
-        res.render('admin/categories/detail', { title: 'Category Detail', category:category } );
-  });
-
-};
-
-
 exports.category_create_post = (req, res, next) => {
 
-    // req.checkBody('name', 'Category name required').notEmpty();
-    // req.sanitize('name').escape();
-    // req.sanitize('name').trim();
+    req.checkBody('name', 'Category name required').notEmpty();
+    req.sanitize('name').escape();
+    req.sanitize('name').trim();
 
-    // var errors = req.validationErrors();
+    var errors = req.validationErrors();
 
     var category = new models.Category(
       { name: req.body.name }
     );
 
-    category.save(function (err) {
-           if (err) { return next(err); }
-           console.log('save category: ');
-           res.redirect(category.url);
-    });
+    if (errors) {
+        res.render('admin/categories/form', { title: 'Category Create', category: category, errors: errors});
+    return;
+    }
+    else {
+        models.Category.findOne({ 'name': req.body.name })
+            .exec( function(err, found_category) {
+                 console.log('found_category: '+found_category);
+                 if (err) { return next(err); }
 
-    // if (errors) {
-    //     res.render('admin/categories/form', { title: 'Category Create', category: category, errors: errors});
-    // return;
-    // }
-    // else {
-    //     models.Category.findOne({ 'name': req.body.name })
-    //         .exec( function(err, found_category) {
-    //              console.log('found_category: '+ found_category);
-    //              if (err) { return next(err); }
+                 if (found_category) {
 
-    //              if (found_category) {
+                     res.redirect(found_category.url);
+                 }
+                 else {
 
-    //                  // res.redirect(found_category.url);
-    //              }
-    //              else {
+                     category.save(function (err) {
+                       if (err) { return next(err); }
 
-    //                  category.save(function (err) {
-    //                    if (err) { return next(err); }
-    //                    console.log('save category: ');
-    //                    // res.redirect(category.url);
-    //                  });
-    //              }
-    //          });
-    // }
+                       res.redirect(category.url);
+                     });
+                 }
+             });
+    }
 };
+
 
 
 exports.category_delete_get = (req, res, next) => {
-     models.Category.findById(req.params.id)
-       .exec((err, category) => {
+
+    async.parallel({
+        category: (callback) => {
+            models.Category.findById(req.params.id).exec(callback);
+        },
+        category_posts: (callback) => {
+            models.Post.find({ 'category': req.params.id }).exec(callback);
+        },
+    },
+    (err, results) => {
         if (err) { return next(err); }
-        res.render('admin/categories/delete', { title: 'Delete Category', category: category } );
-  });
+
+        res.render('admin/categories/delete', { title: 'Delete Category', category: results.category, category_posts: results.category_posts } );
+    });
 };
 
 exports.category_delete_post = (req, res, next) => {
-    // req.checkBody('id', 'Category id must exist').notEmpty();
+    req.checkBody('id', 'Category id must exist').notEmpty();
 
-    
-    models.Category.findById(req.params.id).exec((err, results) => {
-        
-        if (err) { 
-          return next(err); 
-        }
-        
-        models.Category.findByIdAndRemove(req.body.id, function deleteCat(err) {
-        
+    async.parallel({
+        category: (callback) => {
+            models.Category.findById(req.params.id).exec(callback);
+        },
+        category_posts: (callback) => {
+            models.Post.find({ 'category': req.params.id }).exec(callback);
+        },
+    }, (err, results) => {
         if (err) { return next(err); }
+        if (results.category_posts>0) {
+            res.render('admin/categories/delete', { title: 'Delete Category', category: results.category, category_posts: results.category_posts } );
+            return;
+        }
+        else {
+            models.Category.findByIdAndRemove(req.body.id, function deleteCategory(err) {
+                if (err) { return next(err); }
                 res.redirect('/admin/categories');
             });
-        });
+        }
+    });
 };
 
 
 exports.category_update_get = (req, res, next) => {
 
-    // req.sanitize('id').escape();
-    // req.sanitize('id').trim();
+    req.sanitize('id').escape();
+    req.sanitize('id').trim();
     models.Category.findById(req.params.id, (err, category) => {
         if (err) { return next(err); }
+
         res.render('admin/categories/form', { title: 'Update Category', category: category });
     });
 
@@ -111,15 +134,15 @@ exports.category_update_get = (req, res, next) => {
 
 
 exports.category_update_post = (req, res, next) => {
-    // req.sanitize('id').escape();
-    // req.sanitize('id').trim();
+    req.sanitize('id').escape();
+    req.sanitize('id').trim();
 
-    // req.checkBody('name', 'Category name required').notEmpty();
+    req.checkBody('name', 'Category name required').notEmpty();
 
-    // req.sanitize('name').escape();
-    // req.sanitize('name').trim();
+    req.sanitize('name').escape();
+    req.sanitize('name').trim();
 
-    // var errors = req.validationErrors();
+    var errors = req.validationErrors();
 
     var category = new models.Category(
       {
@@ -128,15 +151,15 @@ exports.category_update_post = (req, res, next) => {
       }
     );
 
-    // if (errors) {
-    //     res.render('category_form', { title: 'Update Category', category: category, errors: errors});
-    // return;
-    // }
-    // else {
+    if (errors) {
+        res.render('admin/categories/form', { title: 'Update Category', category: category, errors: errors});
+    return;
+    }
+    else {
 
         models.Category.findByIdAndUpdate(req.params.id, category, {},  (err,thecategory) => {
             if (err) { return next(err); }
                res.redirect(thecategory.url);
             });
-    // }
+    }
 };

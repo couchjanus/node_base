@@ -1,0 +1,30 @@
+section
+  .flash-comments
+    .header
+      div
+        img(src='/assets/comments.png')
+      .text Comments
+    form#comment-form.pure-form
+      .comment-form
+        .left-side
+          .row
+            input#new_comment_name(type='text', required='', placeholder='enter your name')
+            input#new_comment_email(placeholder='enter valid email', required='', type='email')
+          .row
+            textarea#new_comment_text(placeholder='enter comment text', required='', rows='3')
+        .right-side
+          button.button-secondary.pure-button(type='submit') Send Comment
+    #comments-list.comments-list
+      script#comment-template(type='text/x-template').
+        <div class="user-icon">
+        <img src="/assets/user.png" />
+        </div>
+        <div class="comment-info">
+        <div class="row">
+        <div class="name">{{name}}</div>
+        <div class="email">{{email}}</div>
+        </div>
+        <div class="row">
+        <div class="text">{{comment}}</div>
+        </div>
+        </div>

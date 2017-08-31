@@ -1,4 +1,4 @@
-extends layouts/app
+extends ../layouts/app
 
 block content
   section#feature.section-padding
@@ -8,10 +8,9 @@ block content
           h2= title
 
         ul.nav
-          each post in posts
+          each post in post_list
             li
               h4: a(href=post.link) #{post.title}
           else
             li There are no posts.
         hr.bottom-line
-

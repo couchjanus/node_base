@@ -3,14 +3,11 @@ let async = require('async');
 
 exports.index = function(req, res) {
 
-    async.parallel({
-        post_count: function(callback) {
-            models.Post.count(callback);
-        },
-        category_count: function(callback) {
-            models.Category.count(callback);
-        },
-    }, (err, results) => {
-        res.render('index', { title: 'Janus Blog', error: err, posts: results });
-    });
+    models.Post.find()
+        .sort([['title', 'ascending']])
+        .exec(function (err, list_posts) {
+          if (err) { return next(err); }
+          res.render('index', { title: 'Janus Blog', posts:  list_posts});
+      });
+    
 };
